@@ -30,10 +30,14 @@ class _ImageFeatureState extends State<ImageFeature> {
           ),
         ),
         actions: [
-          IconButton(
-            padding: const EdgeInsets.only(right: 6),
-            onPressed: () {},
-            icon: const Icon(Icons.share),
+          Obx(
+            () => _controller.status.value == Status.complete
+                ? IconButton(
+                    padding: const EdgeInsets.only(right: 6),
+                    onPressed: _controller.shareImage,
+                    icon: const Icon(Icons.share),
+                  )
+                : const SizedBox(),
           ),
         ],
         centerTitle: true,

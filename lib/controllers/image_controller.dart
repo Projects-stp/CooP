@@ -7,6 +7,7 @@ import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../helper/global.dart';
 import '../helper/my_dialog.dart';
@@ -63,6 +64,30 @@ class ImageController extends GetxController {
           MyDialog.success('Image Downloaded to Gallery!');
         },
       );
+    } catch (e) {
+      Get.back();
+      MyDialog.error('Something Went Wrong (Try again in sometime)!');
+      log('downloadImageE: $e');
+    }
+  }
+
+  //?? share image ->
+  void shareImage() async {
+    try {
+      MyDialog.showLoadingDialog();
+
+      log('url: $url');
+
+      final bytes = (await get(Uri.parse(url))).bodyBytes;
+      final dir = await getTemporaryDirectory();
+      final file = await File('${dir.path}/ai_image.png').writeAsBytes(bytes);
+
+      log('filePath: ${file.path}');
+
+      Get.back();
+
+      await Share.shareXFiles([XFile(file.path)],
+          text: 'Check out this Amazing Image created by CooP');
     } catch (e) {
       Get.back();
       MyDialog.error('Something Went Wrong (Try again in sometime)!');

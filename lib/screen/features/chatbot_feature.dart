@@ -26,6 +26,7 @@ class _ChatBotFeatureState extends State<ChatBotFeature> {
             letterSpacing: 0.8,
           ),
         ),
+        elevation: 4,
         centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

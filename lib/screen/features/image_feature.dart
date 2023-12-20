@@ -41,6 +41,7 @@ class _ImageFeatureState extends State<ImageFeature> {
           ),
         ],
         centerTitle: true,
+        elevation: 4,
       ),
 
       //?? floatingActionButton

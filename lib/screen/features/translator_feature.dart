@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../controllers/image_controller.dart';
 import '../../controllers/translate_controller.dart';
 import '../../helper/global.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/custom_loading.dart';
+import '../../widgets/language_sheet.dart';
 
 class TranslatorFeature extends StatefulWidget {
   const TranslatorFeature({super.key});
@@ -30,17 +34,32 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 50,
-                width: mq.width * .4,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(15),
+              InkWell(
+                onTap: () => Get.bottomSheet(
+                  LanguageSheet(
+                    translateController: _controller,
+                    string: _controller.from,
                   ),
                 ),
-                child: const Text('Auto'),
+                borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                child: Container(
+                  height: 50,
+                  width: mq.width * .4,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Obx(
+                    () => Text(
+                      _controller.from.isEmpty
+                          ? 'Auto'
+                          : _controller.from.value,
+                    ),
+                  ),
+                ),
               ),
               IconButton(
                 onPressed: () {},
@@ -49,17 +68,30 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
                   color: Colors.grey,
                 ),
               ),
-              Container(
-                height: 50,
-                width: mq.width * .4,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(15),
+              InkWell(
+                onTap: () => Get.bottomSheet(
+                  LanguageSheet(
+                    translateController: _controller,
+                    string: _controller.to,
                   ),
                 ),
-                child: const Text('To'),
+                borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                child: Container(
+                  height: 50,
+                  width: mq.width * .4,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Obx(
+                    () => Text(
+                      _controller.to.isEmpty ? 'To' : _controller.to.value,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -69,7 +101,7 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
               vertical: mq.height * .035,
             ),
             child: TextFormField(
-              controller: _controller.textC,
+              controller: _controller.textController,
               minLines: 5,
               maxLines: null,
               onTapOutside: (e) => FocusScope.of(context).unfocus(),
@@ -84,11 +116,11 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
               ),
             ),
           ),
-          if (_controller.resultC.text.isNotEmpty)
+          if (_controller.resultController.text.isNotEmpty)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: mq.width * .04),
               child: TextFormField(
-                controller: _controller.resultC,
+                controller: _controller.resultController,
                 maxLines: null,
                 onTapOutside: (e) => FocusScope.of(context).unfocus(),
                 decoration: const InputDecoration(
@@ -100,13 +132,34 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
                 ),
               ),
             ),
+          Obx(() => _translateResult()),
           SizedBox(height: mq.height * .04),
           CustomButton(
-            onTap: () {},
+            onTap: _controller.translate,
             text: 'Translate',
           ),
         ],
       ),
     );
   }
+
+  Widget _translateResult() => switch (_controller.status.value) {
+        Status.none => const SizedBox(),
+        Status.complete => Padding(
+            padding: EdgeInsets.symmetric(horizontal: mq.width * .04),
+            child: TextFormField(
+              controller: _controller.resultController,
+              maxLines: null,
+              onTapOutside: (e) => FocusScope.of(context).unfocus(),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        Status.loading => const Align(child: CustomLoading()),
+      };
 }

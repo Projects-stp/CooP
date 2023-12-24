@@ -62,10 +62,15 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  CupertinoIcons.repeat,
-                  color: Colors.grey,
+                onPressed: _controller.swapLanguages,
+                icon: Obx(
+                  () => Icon(
+                    CupertinoIcons.repeat,
+                    color:
+                        _controller.from.isNotEmpty && _controller.to.isNotEmpty
+                            ? Colors.blue
+                            : Colors.grey,
+                  ),
                 ),
               ),
               InkWell(

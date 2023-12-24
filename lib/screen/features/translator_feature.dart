@@ -1,5 +1,7 @@
+import 'package:coop/helper/my_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/image_controller.dart';
@@ -152,19 +154,37 @@ class _TranslatorFeatureState extends State<TranslatorFeature> {
         Status.none => const SizedBox(),
         Status.complete => Padding(
             padding: EdgeInsets.symmetric(horizontal: mq.width * .04),
-            child: TextFormField(
-              controller: _controller.resultController,
-              maxLines: null,
-              onTapOutside: (e) => FocusScope.of(context).unfocus(),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _controller.resultController,
+                  maxLines: null,
+                  onTapOutside: (e) => FocusScope.of(context).unfocus(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _copyToClipboard(_controller.resultController.text);
+                    },
+                    child: const Text('Copy to Clipboard'),
+                  ),
+                ),
+              ],
             ),
           ),
         Status.loading => const Align(child: CustomLoading()),
       };
+
+  void _copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    MyDialog.success('Message Copied to Clipboard');
+  }
 }

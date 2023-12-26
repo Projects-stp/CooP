@@ -25,6 +25,20 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coop',
+      themeMode: ThemeMode.dark,
+      //*** dark ->
+      darkTheme: ThemeData(
+        useMaterial3: false,
+        brightness: Brightness.dark,
+        appBarTheme: const AppBarTheme(
+          elevation: 4,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -32,4 +46,14 @@ class MyApp extends StatelessWidget {
       home: const SplashScreen(),
     );
   }
+}
+
+extension AppTheme on ThemeData {
+  //*** light text color
+  Color get lightTextColor =>
+      brightness == Brightness.dark ? Colors.white70 : Colors.black54;
+
+  //*** button color
+  Color get buttonColor =>
+      brightness == Brightness.dark ? Colors.cyan.withOpacity(.5) : Colors.blue;
 }

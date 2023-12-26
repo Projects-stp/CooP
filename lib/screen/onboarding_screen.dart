@@ -1,3 +1,4 @@
+import 'package:coop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -57,10 +58,10 @@ class OnboardingScreen extends StatelessWidget {
                 child: Text(
                   list[index].subtitle,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     letterSpacing: 0.5,
-                    color: Colors.black54,
+                    color: Theme.of(context).lightTextColor,
                   ),
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:coop/main.dart';
 import 'package:flutter/material.dart';
 
 import '../helper/global.dart';
@@ -17,7 +18,7 @@ class CustomButton extends StatelessWidget {
     return Align(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.cyan,
+          backgroundColor: Theme.of(context).buttonColor,
           shape: const StadiumBorder(),
           elevation: 0,
           minimumSize: Size(

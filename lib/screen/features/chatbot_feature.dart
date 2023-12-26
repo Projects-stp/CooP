@@ -1,4 +1,5 @@
 import 'package:coop/controllers/chat_controller.dart';
+import 'package:coop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,8 +27,6 @@ class _ChatBotFeatureState extends State<ChatBotFeature> {
             letterSpacing: 0.8,
           ),
         ),
-        elevation: 4,
-        centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
@@ -39,13 +38,13 @@ class _ChatBotFeatureState extends State<ChatBotFeature> {
                 controller: _controller.textC,
                 textAlign: TextAlign.center,
                 onTapOutside: (e) => FocusScope.of(context).unfocus(),
-                decoration: const InputDecoration(
-                  fillColor: Colors.white,
+                decoration: InputDecoration(
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                   filled: true,
                   isDense: true,
                   hintText: 'Ask me anything you want...',
-                  hintStyle: TextStyle(fontSize: 14),
-                  border: OutlineInputBorder(
+                  hintStyle: const TextStyle(fontSize: 14),
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(50),
                     ),
@@ -56,7 +55,7 @@ class _ChatBotFeatureState extends State<ChatBotFeature> {
             const SizedBox(width: 8),
             CircleAvatar(
               radius: 24,
-              backgroundColor: Colors.purple,
+              backgroundColor: Theme.of(context).buttonColor,
               child: IconButton(
                 onPressed: _controller.askQuestion,
                 icon: const Icon(

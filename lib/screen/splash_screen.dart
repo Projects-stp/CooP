@@ -2,8 +2,10 @@ import 'package:coop/screen/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../db/pref.dart';
 import '../helper/global.dart';
 import '../widgets/custom_loading.dart';
+import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,7 +22,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       const Duration(seconds: 4),
       () {
-        Get.off(() => const OnboardingScreen());
+        Get.off(
+          () => Pref.showOnboarding
+              ? const OnboardingScreen()
+              : const HomeScreen(),
+        );
       },
     );
   }
